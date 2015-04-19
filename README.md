@@ -19,8 +19,9 @@ Konto skojarzone z aplikacją: twitter.com/panretliter
 - ```nowabaza``` - usuwa starą i tworzy nową, domyślną bazę ze sportowcami
 - ```wyszyscautorow``` - usuwa wszystkie konta z bazy oraz tweety z tych kont
 
-Legenda:
-<autor> - w tym miejscu musi znaleźć się nazwa użytkownika istniejącego w bazie
-[autor] - nazwa użytkownika może się pojawić - jeśli tak się nie stanie, instrukcja zostanie uogólniona na wszystkie konta z bazy
+<b>Legenda:</b>
+- ```<autor>``` - w tym miejscu musi znaleźć się nazwa użytkownika istniejącego w bazie
+- ```[autor]``` - nazwa użytkownika może się pojawić - jeśli tak się nie stanie, instrukcja zostanie uogólniona na wszystkie konta z bazy
 
-Uwaga - warto pamiętać, że po wczytaniu nowej bazy (po użyciu nowabaza) tabela z tweetami jest pusta. Należy użyć parametru pobierz do ściągnięcia tweetów. Dopiero wtedy będziemy mogli otrzymywać sugestie i wysyłać retweety.
+<b>Uwaga:</b>
+Warto pamiętać, że po wczytaniu nowej bazy (po użyciu ```nowabaza```) tabela z tweetami jest pusta. Należy użyć parametru ```pobierz``` do ściągnięcia tweetów. Dopiero wtedy będziemy mogli otrzymywać sugestie i wysyłać retweety.
