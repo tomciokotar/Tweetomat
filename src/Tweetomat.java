@@ -8,99 +8,99 @@ public class Tweetomat
 {
 	public static void main(String[] args) throws SQLException, TwitterException, ClassNotFoundException
 	{
-		Connection con = null;
-		Statement st = null;
+		Connection connection = null;
+		Statement statement = null;
 		Twitter twitter = null;
 		
 		if (args.length == 0) {
-			System.out.print("Brak argumentów, instrukcje w pliku readme.\n");
+			System.out.print("No arguments, look at readme.\n");
 			return;
 		}
 		
-		System.out.print("Łączenie z bazą danych... ");
+		System.out.print("Connecting to the database... ");
 		
 		try {
 			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:baza.db");
-			st = con.createStatement();
+			connection = DriverManager.getConnection("jdbc:sqlite:database.db");
+			statement = connection.createStatement();
 		} catch (Exception e) {
-			System.out.print("BŁĄD\n");
+			System.out.print("ERROR\n");
 			e.printStackTrace();
 		}
 		
-		System.out.print("OK\nŁączenie z Twitterem... ");
+		System.out.print("OK\nConnecting with Twitter... ");
 		
 		try {
-			twitter = Operacje.zaloguj();
+			twitter = Operations.login();
 		} catch (Exception e) {
-			System.out.print("BŁĄD\n");
+			System.out.print("ERROR\n");
 			e.printStackTrace();
 		}
 		
 		System.out.print("OK\n");
 		
-		if (args[0].equals("dodaj")) {
+		if (args[0].equals("add")) {
 			if (args.length < 2) {
-				System.out.print("Za mało argumentów.\n");
+				System.out.print("Too little number of arguments.\n");
 				return;
 			}
 			
-			Operacje.dodajAutora(con, args[1]);
+			Operations.addAuthor(connection, args[1]);
 		}
-		else if (args[0].equals("usun")) {
+		else if (args[0].equals("remove")) {
 			if (args.length < 2) {
-				System.out.print("Za mało argumentów.\n");
+				System.out.print("Too little number of arguments.\n");
 				return;
 			}
 			
-			Operacje.usunAutora(con, args[1]);
+			Operations.removeAuthor(connection, args[1]);
 		}
-		else if (args[0].equals("wyczysctweety")) {
+		else if (args[0].equals("removetweets")) {
 			if (args.length < 2)
-				Operacje.wyczyscTweety(con, null);
+				Operations.removeTweets(connection, null);
 			else
-				Operacje.wyczyscTweety(con, args[1]);
+				Operations.removeTweets(connection, args[1]);
 		}
-		else if (args[0].equals("zaproponuj")) {
-			Status propozycja = null;
+		else if (args[0].equals("propose")) {
+			Status proposal = null;
 			
 			if (args.length < 2)
-				propozycja = Operacje.dajNajlepszy(twitter, con, null);
+				proposal = Operations.giveTheBest(twitter, connection, null);
 			else
-				propozycja = Operacje.dajNajlepszy(twitter, con, args[1]);
+				proposal = Operations.giveTheBest(twitter, connection, args[1]);
 			
-			if (propozycja == null)
-				System.out.print("Brak propozycji.\n");
+			if (proposal == null)
+				System.out.print("No proposals.\n");
 			else
-				System.out.print(propozycja.getUser().getName() + ":\n" + propozycja.getText() + "\n");
+				System.out.print(proposal.getUser().getName() + ":\n" + proposal.getText() + "\n");
 		}
-		else if (args[0].equals("zretweetuj")) {
+		else if (args[0].equals("retweet")) {
 			if (args.length < 2)
-				Operacje.zretweetuj(twitter, con, Operacje.dajNajlepszy(twitter, con, null));
+				Operations.retweet(twitter, connection, Operations.giveTheBest(twitter, connection, null));
 			else
-				Operacje.zretweetuj(twitter, con, Operacje.dajNajlepszy(twitter, con, args[1]));
+				Operations.retweet(twitter, connection, Operations.giveTheBest(twitter, connection, args[1]));
 		}
-		else if (args[0].equals("pobierz")) {
+		else if (args[0].equals("download")) {
 			if (args.length < 2)
-				Operacje.archiwizujTweety(twitter, con, null);
+				Operations.archiveTweets(twitter, connection, null);
 			else
-				Operacje.archiwizujTweety(twitter, con, args[1]);
+				Operations.archiveTweets(twitter, connection, args[1]);
 		}
-		else if (args[0].equals("autorzy")) {
-			ArrayList<String> osoby = Operacje.autorzy(con);
+		else if (args[0].equals("authors")) {
+			ArrayList<String> authors = Operations.getAuthors(connection);
 			
-			System.out.print("Konta w bazie:\n");
-			for (String s : osoby)
-				System.out.println(s);
+			System.out.print("Authors in the database:\n");
+			for (String author: authors)
+				System.out.println(author);
 		}
-		else if (args[0].equals("nowabaza"))
-			StworzBaze.nowaBaza();
-		else if (args[0].equals("wyczyscautorow"))
-			Operacje.wyczyscAutorow(con);
+		else if (args[0].equals("newdatabase"))
+			CreateDatabase.newDatabase();
+		else if (args[0].equals("removeauthors"))
+			Operations.removeAuthors(connection);
 		else
-			System.out.print("Nieznane polecenie.\n");
+			System.out.print("Unknown parameter.\n");
 		
-		con.close();
-		st.close();
+		connection.close();
+		statement.close();
 	}
 }
