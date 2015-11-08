@@ -5,10 +5,8 @@ At the first run you need to use ```newdatabase``` and ```download``` to set up 
 
 An account connected with the application: twitter.com/panretliter
 
-A Twitter4J library is required.
-
 # How to run
-```$ java Tweetomat <parameter>```
+```$ java -jar Tweetomat.jar <parameter>```
 
 # Possible parameters
 - ```add <author>``` - adds the user ```<author>``` to authors table
